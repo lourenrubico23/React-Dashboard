@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Home from "./components/pages/home/Home"
-import Students from "./components/pages/developer/database/Students"
+import Students from "./components/pages/developer/database/student/Students"
+import Teacher from "./components/pages/developer/database/teacher/Teacher"
+import Staff from "./components/pages/developer/database/staff/Staff"
+
 
 
 
@@ -10,7 +12,11 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/database" element={<Students/>}/>
+          <Route path="/database/student" element={<Students/>}/>
+          <Route path="/database/teacher" element={<Teacher/>}/>
+          <Route path="/database/staff" element={<Staff/>}/>
+          
+          
         </Routes>
       </Router>
     </>
