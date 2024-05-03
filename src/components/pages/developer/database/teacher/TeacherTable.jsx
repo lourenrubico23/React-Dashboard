@@ -4,8 +4,9 @@ import { PiArchive } from 'react-icons/pi'
 import NoData from '../../../../partials/NoData'
 import TableLoader from '../../../../partials/TableLoader'
 
-const TeacherTable = ({setShowInfo, showInfo}) => {
+const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
     const handleShowInfo = () =>  setShowInfo(!showInfo)
+    let counter = 1;
 
   return (
     <div className="table-wrapper relative">
@@ -23,32 +24,47 @@ const TeacherTable = ({setShowInfo, showInfo}) => {
                                 </tr>
                             </thead>
                             <tbody>
+                            {isLoading && ( 
                                 <tr>
                                     <td colSpan={9}>
-                                        <TableLoader count="3" cols="20"/>
+                                        <TableLoader count="20" cols="4"/>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colSpan={9}>
-                                        <NoData/>
-                                    </td>
-                                </tr>
-                                <tr onDoubleClick={handleShowInfo}>
-                                    <td>1</td>
-                                    <td>Louren Rubico</td>
-                                    <td>Science 4</td>
-                                    <td>23</td>
-                                    <td>Female</td>
-                                    <td>louren@gmail.com</td>
-                                    <td className='table-action'>
-                                        <ul>
-                                            <li><button className='tooltip' data-tooltip="Edit"><LiaEdit/></button></li>
-                                            <li><button className='tooltip' data-tooltip="Archive"><PiArchive/></button></li>
-                                            <li><button className='tooltip' data-tooltip="Restore"><LiaHistorySolid/></button></li>
-                                            <li><button className='tooltip' data-tooltip="Delete"><LiaTrashAltSolid/></button></li>
-                                        </ul>
-                                    </td>
-                                </tr>
+                                </tr>)
+                                }
+
+                                {<teacher className="data length"></teacher> === 0 && (
+                                    <tr>
+                                        <td colSpan={9}>
+                                            <NoData/>
+                                        </td>
+                                    </tr>
+                                )}
+                            
+                                {teacher?.data.map((item, key) => (
+                                        <tr onDoubleClick={handleShowInfo}>
+                                            <td>{counter++}</td>
+                                            <td>{item.teacher_name}</td>
+                                            <td>{item.teacher_class}</td>
+                                            <td>{item.teacher_age}</td>
+                                            <td>Male</td>
+                                            <td>robert.fox@gmail.com</td>
+                                            <td className='table-action'>
+                                            <ul>
+                                                {item.teacher_is_active ? (
+                                                    <>
+                                                        <li><button className="tooltip" data-tooltip="Edit"><LiaEdit/></button></li>
+                                                        <li><button className="tooltip" data-tooltip="Archive"><PiArchive /></button></li>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    <li><button className="tooltip" data-tooltip="Restore"><LiaHistorySolid/></button></li>
+                                                    <li><button className="tooltip" data-tooltip="Delete"><LiaTrashAltSolid/></button></li></>
+                                                )}
+                                            </ul>
+                                            </td>
+                                        </tr>
+                                    ))              
+                                }
                             </tbody>
                         </table>
                     </div>

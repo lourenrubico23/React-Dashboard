@@ -7,9 +7,22 @@ import { FiPlus } from 'react-icons/fi';
 import StudentTable from '../student/StudentTable';
 import DatabaseInformation from '../DatabaseInformation';
 import TeacherTable from './TeacherTable';
+import ModalAddTeacher from './ModalAddTeacher';
+import useQueryData from '../../../../custom-hook/useQueryData';
 
 const Teacher = () => {
     const [showInfo, setShowInfo] = React.useState(false);
+
+    const {
+        isLoading,
+        isFetching,
+        error,
+        data: teacher,
+      } = useQueryData(
+        "/v1/teacher", // endpoint
+        "get", // method
+        "teacher" // key
+      );
 
   return (
     <>
@@ -36,7 +49,7 @@ const Teacher = () => {
                         <button className='btn btn--accent '><FiPlus/>New</button>
                     </div>
 
-                    <TeacherTable setShowInfo={setShowInfo} showInfo={showInfo}/>
+                    <TeacherTable setShowInfo={setShowInfo} showInfo={showInfo} isLoading={isLoading} teacher={teacher}/>
                 </div>
                 
                 <DatabaseInformation showInfo={showInfo}/>
@@ -45,7 +58,7 @@ const Teacher = () => {
 
     </section>
 
-    {/* <ModalAddStudent/> */}
+    {/* <ModalAddTeacher/> */}
     {/* <ModalError position="center"/> */}
     {/* <ModalValidate position="center"/> */}
     {/* <ModalConfirm position="center"/> */}
