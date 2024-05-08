@@ -14,10 +14,32 @@ import ModalValidate from '../../../../partials/modals/ModalValidate'
 import ModalConfirm from '../../../../partials/modals/ModalConfirm'
 import ModalDelete from '../../../../partials/modals/ModalDelete'
 import SpinnerWindow from '../../../../partials/spinners/SpinnerWindow'
+import useQueryData from '../../../../custom-hook/useQueryData'
+import Toast from '../../../../partials/Toast'
 
 const Students = () => {
     const [showInfo, setShowInfo] = React.useState(false);
+    const [isAdd, setIsAdd] = React.useState(false);
+    const [isSuccess, setIsSuccess] = React.useState(false);
+    const [message, setMessage] = React.useState('');
+    const [itemEdit, setItemEdit ] = React.useState(null);
 
+    const {
+        isLoading,
+        isFetching,
+        error,
+        data: student,
+      } = useQueryData(
+        "/v1/student", // endpoint
+        "get", // method
+        "student" // key
+      );
+
+
+      const handleAdd = () => {
+        setIsAdd(true)
+        setItemEdit(null)//for reset of modal from update to add
+      }
 
     
 
@@ -43,10 +65,10 @@ const Students = () => {
                             <li className='tab-link'><Link to="/database/teacher">Teacher</Link></li>
                             <li className='tab-link'><Link to="/database/staff">Staff</Link></li>
                         </ul>
-                        <button className='btn btn--accent '><FiPlus/>New</button>
+                        <button className='btn btn--accent ' onClick={handleAdd}><FiPlus/>New</button>
                     </div>
 
-                    <StudentTable setShowInfo={setShowInfo} showInfo={showInfo}/>
+                    <StudentTable setShowInfo={setShowInfo} showInfo={showInfo} isLoading={isLoading} student={student} setItemEdit={setItemEdit} setIsAdd={setIsAdd} setIsSuccess={setIsSuccess} setMessage={setMessage}/>
                 </div>
                 
                 <DatabaseInformation showInfo={showInfo}/>
@@ -54,11 +76,13 @@ const Students = () => {
         </main>
 
     </section>
+    {isAdd && <ModalAddStudent setIsAdd={setIsAdd} setIsSuccess={setIsSuccess} setMessage={setMessage} itemEdit={itemEdit}/>}
 
-    {/* <ModalAddStudent/> */}
+    {isSuccess && <Toast setIsSuccess={setIsSuccess} message={message}/>}
+
     {/* <ModalError position="center"/> */}
     {/* <ModalValidate position="center"/> */}
-    {/* <ModalConfirm position="center"/> */}
+   
     {/* <ModalDelete position="center"/> */}
     {/* <SpinnerWindow/> */}
     </>

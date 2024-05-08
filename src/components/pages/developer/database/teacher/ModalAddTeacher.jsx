@@ -15,16 +15,16 @@ const ModalAddTeacher = () => {
     }
 
     const yupSchema = Yup.object({
-        student_name: Yup.string().required("Required"),
-        student_class: Yup.string().required("Required"),
-        student_age: Yup.number().required("Required"),
+        student_name: Yup.string().required("Required*"),
+        student_class: Yup.string().required("Required*"),
+        student_age: Yup.number().required("Required*"),
     })
 
   return (
     <ModalWrapper>
         <div className="main-modal w-[300px] bg-secondary text-content h-full">
                 <div className="modal-header p-4 relative">
-                    <h2>New Student</h2>
+                    <h2>Update Student</h2>
                     <button className='absolute top-6 right-4'><LiaTimesSolid/></button>
                     </div>
                 <div className="modal-body p-4 ">

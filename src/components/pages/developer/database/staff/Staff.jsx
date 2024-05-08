@@ -7,9 +7,21 @@ import { FiPlus } from 'react-icons/fi';
 import StudentTable from '../student/StudentTable';
 import DatabaseInformation from '../DatabaseInformation';
 import StaffTable from './StaffTable';
+import useQueryData from '../../../../custom-hook/useQueryData';
 
 const Staff = () => {
     const [showInfo, setShowInfo] = React.useState(false);
+
+    const {
+        isLoading,
+        isFetching,
+        error,
+        data: staff,
+      } = useQueryData(
+        "/v1/staff", // endpoint
+        "get", // method
+        "staff" // key
+      );
 
   return (
     <>
@@ -36,7 +48,7 @@ const Staff = () => {
                         <button className='btn btn--accent '><FiPlus/>New</button>
                     </div>
 
-                    <StaffTable setShowInfo={setShowInfo} showInfo={showInfo}/>
+                    <StaffTable setShowInfo={setShowInfo} showInfo={showInfo} isLoading={isLoading} staff={staff}/>
                 </div>
                 
                 <DatabaseInformation showInfo={showInfo}/>

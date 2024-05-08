@@ -1,12 +1,15 @@
 import React from 'react'
 import { LiaEnvelope, LiaKeySolid } from 'react-icons/lia'
+import StudentTable from './student/StudentTable'
 
 const DatabaseInformation = ({showInfo}) => {
+
   return (
     <div className={`information absolute transition-all border-l border-line min-h-[calc(100vh-65px)] overflow-hidden w-1/4 ${showInfo ? "right-0" : "-right-1/4"}`}>
                     <div className='p-10'>
                         <div className="text-center mb-8">
                             <img src="https://via.placeholder.com/100x100" alt="" className=' size-[100px] mx-auto object-cover mb-4 rounded-full'/>
+
                             <h3 className='mb-1'>Robert Fox</h3>
                             <small className='opacity-60'>Science 7 Student</small>
                             <ul className='flex gap-5 mt-5 justify-center '>

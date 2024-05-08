@@ -37,6 +37,8 @@ Class Staff {
             $sql .= ":staff_name, "; 
             $sql .= ":staff_class, "; 
             $sql .= ":staff_age, "; 
+            $sql .= ":staff_email, "; 
+            $sql .= ":staff_gender, "; 
             $sql .= ":staff_is_active, "; 
             $sql .= ":staff_created, "; 
             $sql .= ":staff_datetime )"; 

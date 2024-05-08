@@ -41,13 +41,13 @@ const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
                                 )}
                             
                                 {teacher?.data.map((item, key) => (
-                                        <tr onDoubleClick={handleShowInfo}>
+                                        <tr onDoubleClick={handleShowInfo} className='hover:bg-accent/90'>
                                             <td>{counter++}</td>
                                             <td>{item.teacher_name}</td>
                                             <td>{item.teacher_class}</td>
                                             <td>{item.teacher_age}</td>
-                                            <td>Male</td>
-                                            <td>robert.fox@gmail.com</td>
+                                            <td>{item.teacher_gender}</td>
+                                            <td>{item.teacher_email}</td>
                                             <td className='table-action'>
                                             <ul>
                                                 {item.teacher_is_active ? (
