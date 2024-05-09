@@ -3,12 +3,46 @@ import { LiaEdit, LiaHistorySolid, LiaTrashAltSolid } from 'react-icons/lia'
 import { PiArchive } from 'react-icons/pi'
 import NoData from '../../../../partials/NoData'
 import TableLoader from '../../../../partials/TableLoader'
+import ModalConfirm from '../../../../partials/modals/ModalConfirm'
+import ModalDelete from '../../../../partials/modals/ModalDelete'
 
-const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
-    const handleShowInfo = () =>  setShowInfo(!showInfo)
+const TeacherTable = ({setShowInfo, showInfo ,teacher, isLoading  , setItemEdit, setIsAdd, setIsSuccess, setMessage, setTeacherInfo}) => {
+    const handleShowInfo = (item) =>  {
+        setTeacherInfo(item)
+        setShowInfo(true)
+    } //to show table
+
+    const [isActive, setIsActive] = React.useState(false) //for archive
+    const [isArchiving, setIsArchiving] = React.useState(0)
+    const [isDelete, setIsDelete] = React.useState(false)
+    const [id, setId] = React.useState('')
     let counter = 1;
 
+    const handleEdit = (item) => {
+        setIsAdd(true)
+        setItemEdit(item)  
+    }
+
+    const handleActive = (item) => { // for Archive button
+        setIsActive(true)
+        setId(item.teacher_aid)
+        setIsArchiving(0)
+    }
+
+    const handleRestore = (item) => { //for Restore button
+        setIsActive(true)
+        setId(item.teacher_aid)
+        setIsArchiving(1)
+    
+    }
+    const handleDelete = (item) => { //for Delete button
+        setIsDelete(true)
+        setId(item.teacher_aid)
+       
+    }
+
   return (
+    <>
     <div className="table-wrapper relative">
         {/* <SpinnerFetching/> */}
                         <table>
@@ -41,7 +75,7 @@ const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
                                 )}
                             
                                 {teacher?.data.map((item, key) => (
-                                        <tr onDoubleClick={handleShowInfo} className='hover:bg-accent/90'>
+                                        <tr onDoubleClick={() => handleShowInfo(item)} className='hover:bg-accent/90' key={key}>
                                             <td>{counter++}</td>
                                             <td>{item.teacher_name}</td>
                                             <td>{item.teacher_class}</td>
@@ -52,13 +86,13 @@ const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
                                             <ul>
                                                 {item.teacher_is_active ? (
                                                     <>
-                                                        <li><button className="tooltip" data-tooltip="Edit"><LiaEdit/></button></li>
-                                                        <li><button className="tooltip" data-tooltip="Archive"><PiArchive /></button></li>
+                                                        <li><button className="tooltip" data-tooltip="Edit" onClick={() => handleEdit(item)}><LiaEdit/></button></li>
+                                                        <li><button className="tooltip" data-tooltip="Archive" onClick={() => handleActive(item)}><PiArchive /></button></li>
                                                     </>
                                                 ) : (
                                                     <>
-                                                    <li><button className="tooltip" data-tooltip="Restore"><LiaHistorySolid/></button></li>
-                                                    <li><button className="tooltip" data-tooltip="Delete"><LiaTrashAltSolid/></button></li></>
+                                                    <li><button className="tooltip" data-tooltip="Restore" onClick={() => handleRestore(item)}><LiaHistorySolid/></button></li>
+                                                    <li><button className="tooltip" data-tooltip="Delete" onClick={() => handleDelete(item)}><LiaTrashAltSolid/></button></li></>
                                                 )}
                                             </ul>
                                             </td>
@@ -68,6 +102,11 @@ const TeacherTable = ({setShowInfo, showInfo,teacher,isLoading}) => {
                             </tbody>
                         </table>
                     </div>
+                    
+            {isActive && <ModalConfirm position="center" setIsActive={setIsActive} queryKey="teacher" endpoint={`/v1/teacher/active/${id}`} isArchiving={isArchiving} setIsSuccess={setIsSuccess} setMessage={setMessage}/>}
+
+            {isDelete && <ModalDelete position="center" setIsDelete={setIsDelete} queryKey="teacher" endpoint={`/v1/teacher/${id}`} setIsSuccess={setIsSuccess} setMessage={setMessage}/>}
+</>
   )
 }
 

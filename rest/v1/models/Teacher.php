@@ -37,6 +37,8 @@ Class Teacher {
             $sql .= ":teacher_name, "; 
             $sql .= ":teacher_class, "; 
             $sql .= ":teacher_age, "; 
+            $sql .= ":teacher_email, "; 
+            $sql .= ":teacher_gender, "; 
             $sql .= ":teacher_is_active, "; 
             $sql .= ":teacher_created, "; 
             $sql .= ":teacher_datetime )"; 

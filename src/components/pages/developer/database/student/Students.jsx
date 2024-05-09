@@ -8,7 +8,6 @@ import { LiaEdit, LiaEnvelope, LiaHistorySolid, LiaKeySolid, LiaTrashAltSolid } 
 import { PiArchive } from 'react-icons/pi'
 import ModalAddStudent from './ModalAddStudent'
 import StudentTable from './StudentTable'
-import DatabaseInformation from '../DatabaseInformation'
 import ModalError from '../../../../partials/modals/ModalError'
 import ModalValidate from '../../../../partials/modals/ModalValidate'
 import ModalConfirm from '../../../../partials/modals/ModalConfirm'
@@ -16,13 +15,17 @@ import ModalDelete from '../../../../partials/modals/ModalDelete'
 import SpinnerWindow from '../../../../partials/spinners/SpinnerWindow'
 import useQueryData from '../../../../custom-hook/useQueryData'
 import Toast from '../../../../partials/Toast'
+import DatabaseInfoStudent from './DatabaseInfoStudent'
+import Searchbar from './Searchbar'
+import { StoreContext } from '../../../../../store/StoreContext'
+import { setIsAdd } from '../../../../../store/StoreAction'
 
 const Students = () => {
-    const [showInfo, setShowInfo] = React.useState(false);
-    const [isAdd, setIsAdd] = React.useState(false);
-    const [isSuccess, setIsSuccess] = React.useState(false);
-    const [message, setMessage] = React.useState('');
+    const { store, dispatch } = React.useContext(StoreContext); //store is the initial value and the dispatch is the value that will be change  
     const [itemEdit, setItemEdit ] = React.useState(null);
+    const [studentInfo, setStudentInfo] = React.useState('');;
+    const [isSearch, setIsSeach] = React.useState(false);
+    const [keyword, setKeyword] = React.useState('');
 
     const {
         isLoading,
@@ -30,14 +33,16 @@ const Students = () => {
         error,
         data: student,
       } = useQueryData(
-        "/v1/student", // endpoint
-        "get", // method
-        "student" // key
+        isSearch ? "/v1/student/search" : "/v1/student", // endpoint
+        isSearch ? "post" : "get", // method
+        "student", // key
+        {
+            searchValue: keyword
+        }
       );
 
-
       const handleAdd = () => {
-        setIsAdd(true)
+        dispatch(setIsAdd(true))
         setItemEdit(null)//for reset of modal from update to add
       }
 
@@ -50,13 +55,10 @@ const Students = () => {
         <main className='w-[calc(100%-250px)]'>
             <Header/>
             <div className='flex relative'>
-                <div className={`main-wrapper transition-all px-4 py-3 ${showInfo ? "w-3/4" : "w-full"}`}>
+                <div className={`main-wrapper transition-all px-4 py-3 ${store.isShow ? "w-3/4" : "w-full"}`}>
                     <div className='flex justify-between items-center'>
                         <h1>Database</h1>
-                        <form action="" className='relative'>
-                            <input type="text" placeholder='Search Student' className='p-1 px-3 pl-10 outline-none bg-secondary border border-stone-800 rounded-md text-white placeholder:opacity-20 placeholder:text-bg-stone-400'/>
-                            <CiSearch className='absolute top-1 left-2 text-white opacity-20 text-2xl'/>
-                        </form>
+                        <Searchbar setIsSeach={setIsSeach} setKeyword={setKeyword}/>
                     </div>    
                 
                     <div className='tab flex justify-between items-center mt-8 border-b border-line mb-8'>
@@ -68,17 +70,17 @@ const Students = () => {
                         <button className='btn btn--accent ' onClick={handleAdd}><FiPlus/>New</button>
                     </div>
 
-                    <StudentTable setShowInfo={setShowInfo} showInfo={showInfo} isLoading={isLoading} student={student} setItemEdit={setItemEdit} setIsAdd={setIsAdd} setIsSuccess={setIsSuccess} setMessage={setMessage}/>
+                    <StudentTable setStudentInfo={setStudentInfo} isLoading={isLoading} student={student} setItemEdit={setItemEdit}/>
                 </div>
                 
-                <DatabaseInformation showInfo={showInfo}/>
+                <DatabaseInfoStudent studentInfo={studentInfo} />
             </div>
         </main>
 
     </section>
-    {isAdd && <ModalAddStudent setIsAdd={setIsAdd} setIsSuccess={setIsSuccess} setMessage={setMessage} itemEdit={itemEdit}/>}
+    {store.isAdd && <ModalAddStudent itemEdit={itemEdit}/>}
 
-    {isSuccess && <Toast setIsSuccess={setIsSuccess} message={message}/>}
+    {store.success && <Toast/>}
 
     {/* <ModalError position="center"/> */}
     {/* <ModalValidate position="center"/> */}

@@ -4,13 +4,17 @@ import ModalWrapper from '../../../../partials/modals/ModalWrapper'
 import SpinnerButton from '../../../../partials/spinners/SpinnerButton'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryData } from '../../../../helpers/queryData'
-import { InputText } from '../../../../helpers/Forminputs'
+import { InputSelect, InputText } from '../../../../helpers/Forminputs'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { StoreContext } from '../../../../../store/StoreContext'
+import { setIsAdd, setMessage, setSuccess } from '../../../../../store/StoreAction'
 
-const ModalAddStudent = ({setIsAdd, setMessage, setIsSuccess, itemEdit}) => {
+const ModalAddStudent = ({ itemEdit}) => {
+    const{dispatch} = React.useContext(StoreContext)
+    const handleClose = () =>  dispatch(setIsAdd(false));
 
-    const handleClose = () =>  setIsAdd(false);
+   
     
 
     const queryClient = useQueryClient();
@@ -26,9 +30,9 @@ const ModalAddStudent = ({setIsAdd, setMessage, setIsSuccess, itemEdit}) => {
         onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: ["student"] });
         if (data.success) {
-            setIsAdd(false);
-            setIsSuccess(true);
-            setMessage(`Successfuly updated.`);
+            dispatch(setIsAdd(false));
+            dispatch(setSuccess(true));
+            dispatch(setMessage(`Successfuly updated.`));
         } else {
             /* setIsError(true); */
         }
@@ -40,12 +44,16 @@ const ModalAddStudent = ({setIsAdd, setMessage, setIsSuccess, itemEdit}) => {
         student_name: itemEdit ? itemEdit.student_name : "",
         student_class: itemEdit ? itemEdit.student_class : "",
         student_age: itemEdit ? itemEdit.student_age : "",
+        student_email: itemEdit ? itemEdit.student_email : "",
+        student_gender: itemEdit ? itemEdit.student_gender : "",
     }
 
     const yupSchema = Yup.object({
         student_name: Yup.string().required("Required*"),
         student_class: Yup.string().required("Required*"),
         student_age: Yup.number().required("Required*"),
+        student_gender: Yup.string().required("Required*"),
+        student_email: Yup.string().required("Required*"),
     })
 
     
@@ -84,20 +92,28 @@ const ModalAddStudent = ({setIsAdd, setMessage, setIsSuccess, itemEdit}) => {
                             name="student_class"
                             />
                         </div>
-                       {/*  <div className="input-wrap">
-                            <label htmlFor="">Gender</label>
-                           
-                            <select>
+                        <div className="input-wrap">
+                            <InputSelect label= "Gender"
+                                name = "student_gender">
+                                <option value="" hidden>Select</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                            </select>
-                            <small className='error-msg'>Required*</small>
-                        </div> */}
+                            </InputSelect>
+                                
+                            
+                        </div>
                         <div className="input-wrap">
                         <InputText
                             label = "Age"
                             type="number"
                             name="student_age"
+                            />
+                        </div>
+                        <div className="input-wrap">
+                        <InputText
+                            label = "Email"
+                            type="email"
+                            name="student_email"
                             />
                         </div>
                         
