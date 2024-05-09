@@ -65,7 +65,7 @@ export const StoreReducer = (state, action) => {
         case "IS_ACTIVE":
         return {
           ...state,
-          isSearch: action.payload,
+          isActive: action.payload,
         };
   
       default:

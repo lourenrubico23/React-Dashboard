@@ -67,7 +67,7 @@ const Students = () => {
                             <li className='tab-link'><Link to="/database/teacher">Teacher</Link></li>
                             <li className='tab-link'><Link to="/database/staff">Staff</Link></li>
                         </ul>
-                        <button className='btn btn--accent ' onClick={handleAdd}><FiPlus/>New</button>
+                        <button className='btn btn--accent' onClick={handleAdd}><FiPlus/>New</button>
                     </div>
 
                     <StudentTable setStudentInfo={setStudentInfo} isLoading={isLoading} student={student} setItemEdit={setItemEdit}/>
