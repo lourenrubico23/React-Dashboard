@@ -15,22 +15,7 @@ function App() {
 const queryClient = new QueryClient
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-      <Router>
-        <Routes>
-          <Route path="/database/student" element={<Students/>}/>
-          <Route path="/database/teacher" element={<Teacher/>}/>
-          <Route path="/database/staff" element={<Staff/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/forgot-password" element={<ForgotPassword/>}/>
-          <Route path="/create-password" element={<CreatePassword/>}/>
-          
-          
-        </Routes>
-      </Router>
-      </StoreProvider>
-      </QueryClientProvider>
+    
     </>
   )
 }
