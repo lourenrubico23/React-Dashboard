@@ -1,6 +1,6 @@
 
 
-export const urlPathSchool = "http://localhost/react-dashboard";
+  export const urlPathSchool = "http://localhost/react-dashboard";
 export const devApiUrl = `${urlPathSchool}/rest`;
 
 export const devKey =
